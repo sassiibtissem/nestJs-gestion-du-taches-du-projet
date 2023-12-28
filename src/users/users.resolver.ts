@@ -11,7 +11,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
-@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => User)
   async createUser(@Args('createUserInput') CreateUserInput: CreateUserInput) {
     return await this.usersService.create(CreateUserInput);
@@ -23,20 +23,22 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) email:string) {
+  findOne(@Args('id', { type: () => Int }) email: string) {
     return this.usersService.findOne(email);
   }
 
   @Mutation(() => User)
-  async updateUser(@Args('_id', { type: () => Int }) _id: number,@Args('updateUserInput') updateUserInput: UpdateUserInput,) {
+  async updateUser(
+    @Args('_id', { type: () => Int }) _id: number,
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+  ) {
     return await this.usersService.update(_id, updateUserInput);
   }
-  
 
   @Mutation(() => User)
   async removeUser(@Args('_id', { type: () => Int }) id: number) {
     const removedUser = await this.usersService.remove(id);
-  
+
     if (removedUser) {
       return removedUser;
     } else {

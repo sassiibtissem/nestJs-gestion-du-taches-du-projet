@@ -1,40 +1,68 @@
-
-import { loginUserInput } from './dto/login-user_input';
-
-import { UsersService } from './../users/users.service';
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+// import { CreateAuthInput, LoginAuthInput } from './dto/create-auth.input';
+// import { UpdateAuthInput } from './dto/update-auth.input';
+// import { ProfileService } from 'src/profile/profile.service';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { error } from 'console';
-
+import { UsersService } from 'src/users/users.service';
+import { LoginUserInput } from './dto/login-user_input';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private userService: UsersService,
     private jwtService: JwtService,
   ) {}
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.usersService.findOne(email);
 
-    if (user && user.password === password) {
-      // Destructure user object to exclude the password
-      const { password, ...result } = user;
-      return result;
+  async validateUser(email: string, password: string): Promise<any> {
+    let user = await this.userService.findOne(email);
+
+    if (!user) {
+      // throw new HttpException(
+      //   `${email} n'existe pas dans notre base de données`,
+      // );
+      throw new HttpException(
+        `Nom d'utilisateur inexistant`,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    const matchPassword = await bcrypt.compare(password, user.password);
+    if (!matchPassword) {
+      // throw new UnauthorizedException(
+      //   `Le mot de passe que vous avez saisi ne correspond pas à nos données`,
+      // );
+      throw new HttpException(
+        'Mot de passe est incorrect',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
-    return null;
+    if (user) {
+      const matchpassword = await bcrypt.compare(password, user.password);
+      if (matchpassword) {
+        const { password, ...result } = user;
+
+        return result;
+      }
+    }
+    // return null;
   }
-  async login(loginUserInput: loginUserInput) {
-    const user = await this.usersService.findOne(loginUserInput.email);
+
+  async login(loginUserInput: LoginUserInput) {
+    const user = await this.userService.findOne(loginUserInput.email);
+
     const { password, ...result } = user;
+
     return {
-      access_token: this.jwtService.sign({ email: user.email, sub: user._id }), // implemente jwt
+      access_token: this.jwtService.sign({
+        sub: user._id,
+        email: user.email,
+      }),
       user,
     };
-  }
-  async singnup(loginUserInput: loginUserInput) {
-    const user = await this.usersService.findOne(loginUserInput.email);
-    if (user) {
-      throw new error('user is already exist');
-    }
   }
 }
