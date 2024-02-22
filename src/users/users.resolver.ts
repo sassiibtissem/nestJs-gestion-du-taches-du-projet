@@ -7,6 +7,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { Users } from './entities/usersSchema';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -18,8 +19,8 @@ export class UsersResolver {
   }
 
   @Query(() => [User])
-  findAll(@Args('_id') _id: number) {
-    return this.usersService.findAllUser(_id);
+  async findAll() {
+    return this.usersService.findAllUser();
   }
 
   @Query(() => User, { name: 'user' })
@@ -45,4 +46,10 @@ export class UsersResolver {
       throw new NotFoundException(`User with id ${id} not found`);
     }
   }
-}
+  @Query(() => [User])
+  async getUserss() {
+   
+      const users = await this.usersService.getUserByRole();
+      console.log(users, "users");
+      return users;
+    } }

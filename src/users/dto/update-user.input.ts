@@ -5,9 +5,9 @@ import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 @InputType()
 export class UpdateUserInput extends PartialType(CreateUserInput) {
   //nullable:true tnajjem champ mat3adichi
-  @Field({nullable:true})
+  // @Field({nullable:true})
   
-  _id?: number;
+  // _id?: number;
   @Field()
   firstName: string;
   @Field()
@@ -22,4 +22,6 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   @Field()
  
   cin: string;
+  @Field()
+  role:string;
 }

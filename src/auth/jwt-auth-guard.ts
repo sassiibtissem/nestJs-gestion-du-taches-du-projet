@@ -13,7 +13,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
     return request;
   }
-
+// Si l'utilisateur est authentifié avec succès, renvoie l'objet utilisateur.
   handleRequest(err: any, user: any) {
     if (user) {
       return user;

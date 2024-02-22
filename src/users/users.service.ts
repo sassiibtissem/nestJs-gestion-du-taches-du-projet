@@ -1,3 +1,4 @@
+
 import { User } from './entities/user.entity';
 
 import { Injectable } from '@nestjs/common';
@@ -6,6 +7,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { Users } from './entities/usersSchema';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +17,8 @@ export class UsersService {
 
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-  ) {}
+    
+   ) {}
 
   async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(this.saltRounds);
@@ -34,8 +37,8 @@ export class UsersService {
     return await newUser.save();
   }
   // findAllUser by Id
-  async findAllUser(_id: number): Promise<User[]> {
-    return await this.userModel.find({ _id });
+  async findAllUser(): Promise<User[]> {
+    return await this.userModel.find();
   }
 
   // findOneUser
@@ -43,7 +46,7 @@ export class UsersService {
     return await this.userModel.findOne({email}); // Use findById to find a single user by ID
   }
 
-  // function to update inputs
+  // function to update User inputs
   async update(
     _id: number,
     updateUserInput: UpdateUserInput,
@@ -96,5 +99,27 @@ export class UsersService {
     }
 
     return null; // If user not found
+  } 
+ async getUserByRole():Promise <User[]>{
+ let user = await this.userModel.aggregate([
+
+   { $match: { role:"projectLeader" }  } ,
+   { $project:
+     {
+      "_id" : 1,
+      "firstName" : 1,
+      "lastName":1
+     
+    }
+
+
   }
-}
+
+
+    
+
+])
+ 
+  console.log(user, "userrr")
+  return user;
+ }}

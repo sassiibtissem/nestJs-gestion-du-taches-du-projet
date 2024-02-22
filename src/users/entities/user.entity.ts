@@ -1,7 +1,6 @@
 
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+
 
 //declaration entity (table)
 
@@ -26,11 +25,11 @@ import { HydratedDocument } from 'mongoose';
 //export schema entity
 // export const UserSchema = SchemaFactory.createForClass(Users)
 
-// declaration des outputs
+// declaration des outputs 
 @ObjectType()
 export class User {
   @Field({nullable:true})
-  _id: number;
+  _id: string;
   @Field()
   firstName: string;
   @Field()
@@ -41,4 +40,6 @@ export class User {
   password: string;
   @Field()
   cin: string;
+  @Field()
+ role: string;
 }
