@@ -18,6 +18,5 @@ export class CreateTaskInput {
   developer_name:string;
   @Field({nullable:true})
   state:string;
-  @Field({nullable:true})
-  developerId:string;
+
 }

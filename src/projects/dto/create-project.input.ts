@@ -30,5 +30,19 @@ export class userProject {
   @Field({ nullable:true})
   userId: string;
   @Field({ nullable:true})
-  developer_name:string ;
+  leader_name:string ;
+  @Field({ nullable:true})
+  project_name:string;
+  @Field({ nullable:true})
+  description:string;
+  @Field({ nullable:true})
+  subject:string;
+  @Field({ nullable:true})
+  start_date:string;
+  @Field({ nullable:true})
+  end_date:string;
+  
+ 
+  
+ 
 }

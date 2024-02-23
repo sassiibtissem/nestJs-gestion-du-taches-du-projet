@@ -45,7 +45,7 @@ export class TasksService {
           start_date: updateTaskInput.start_date,
           estimation_time: updateTaskInput.estimation_time,
           developer_name: updateTaskInput.developer_name,
-          developerId:updateTaskInput.developerId,
+       
           state: updateTaskInput.state,
         },
       },
@@ -84,6 +84,7 @@ export class TasksService {
           "start_date":1,
           "estimation_time":1,
           "developer_name":"$projects.developer_name",
+          "developerId":"$projects.developer_name",
           "state":1,
         }
     },
@@ -111,5 +112,48 @@ export class TasksService {
       },
     ]);
   }
+
+//get ALL developper by tasks
+async getAllProjects(): Promise<Task[]> { // getAllProjectByUser
+  return this.taskModel
+    .aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'developerId',
+          foreignField: '_id',
+          as: 'userBytask',
+        },
+      },
+      // { $unwind: '$userByProject' },
+
+      // {
+      //   $project: {
+      //     Id: '$userByProject.userId',
+      //     leader_name: '$userByProject.leader_name',
+      //     projectName: 1,
+      //     subject: 1,
+      //     description: 1,
+      //     start_date: 1,
+      //     end_date: 1,
+      //   },
+      // },
+    ])
+    .then((res) => {
+      console.log(res, 'join');
+      return res;
+    })
+    .catch((err) => {
+      console.log(err, 'error');
+      return err;
+    });
+}
+
+
+
+
+
+
+
   
 }

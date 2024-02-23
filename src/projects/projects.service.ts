@@ -52,7 +52,8 @@ export class ProjectsService {
       return null; // if project not found.
     }
   }
-  async getAllProjects(): Promise<Project[]> { // getAllProjectByUser
+  async getAllProjects(): Promise<Project[]> {
+    // getAllProjectByUser
     return this.projectModel
       .aggregate([
         {
@@ -143,17 +144,22 @@ export class ProjectsService {
           },
         },
 
-        { $unwind: '$users' },
+        // { $unwind: '$users' },
 
-        {
-          $project: {
-            userId: '$users._id',
-            leader_name: '$users.firstName',
-          },
-        },
+        // {
+        //   $project: {
+        //     "userId": '$users._id',
+        //     "leader_name": '$users.leader_name',
+        //     "project_name": 1,
+        //     "description": 1,
+        //     "subject": 1,
+        //     "start_date": 1,
+        //     "end_date": 1,
+        //   },
+        // },
       ])
       .then((res) => {
-        console.log(res, 'jointure');
+        console.log(res, 'jointureeeeeeeeeeeeeeeeeee');
         return res;
       })
       .catch((err) => {

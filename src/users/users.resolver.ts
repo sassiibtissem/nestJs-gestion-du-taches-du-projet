@@ -52,4 +52,15 @@ export class UsersResolver {
       const users = await this.usersService.getUserByRole();
       console.log(users, "users");
       return users;
-    } }
+    } 
+    @Query(() => [User])
+    async getDeveloper() {
+   
+      const users = await this.usersService.getDeveloperByRole();
+      console.log(users, "developers");
+      return users;
+    }
+  
+  
+  
+  }

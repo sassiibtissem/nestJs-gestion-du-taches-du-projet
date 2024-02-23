@@ -122,4 +122,44 @@ export class UsersService {
  
   console.log(user, "userrr")
   return user;
- }}
+ }
+
+
+ async getDeveloperByRole():Promise <User[]>{
+  let user = await this.userModel.aggregate([
+ 
+    { $match: { role:"developer" }  } ,
+    { $project:
+      {
+       "_id" : 1,
+       "firstName" : 1,
+       "lastName":1
+      
+     }
+ 
+ 
+   }
+ 
+ 
+     
+ 
+ ])
+  
+   console.log(user, "userrr")
+   return user;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
