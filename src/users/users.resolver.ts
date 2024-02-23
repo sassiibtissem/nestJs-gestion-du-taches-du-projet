@@ -48,8 +48,15 @@ export class UsersResolver {
   }
   @Query(() => [User])
   async getUserss() {
-   
-      const users = await this.usersService.getUserByRole();
-      console.log(users, "users");
-      return users;
-    } }
+    const users = await this.usersService.getUserByRole();
+    console.log(users, 'users');
+    return users;
+  }
+
+  @Query(() => [User])
+  async testjoin() {
+    const t = await this.usersService.getProjectsByUser();
+    console.log(t, 'users');
+    return t;
+  }
+}

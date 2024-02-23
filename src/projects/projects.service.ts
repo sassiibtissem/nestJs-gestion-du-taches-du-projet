@@ -52,39 +52,31 @@ export class ProjectsService {
       return null; // if project not found.
     }
   }
-  async getAllProjects(): Promise<Project[]> { // getAllProjectByUser
-    return this.projectModel
-      .aggregate([
+  async getAllProjects(): Promise<Project[]> {
+    try {
+      const result = await this.projectModel.aggregate([
+        {
+          $addFields: {
+            userIdObject: { $toObjectId: '$userId' }, // Convert userId to ObjectId
+          },
+        },
         {
           $lookup: {
             from: 'users',
-            localField: 'userId',
+            localField: 'userIdObject',
             foreignField: '_id',
             as: 'userByProject',
           },
         },
-        // { $unwind: '$userByProject' },
+        { $unwind: '$userByProject' },
+      ]);
 
-        // {
-        //   $project: {
-        //     Id: '$userByProject.userId',
-        //     leader_name: '$userByProject.leader_name',
-        //     projectName: 1,
-        //     subject: 1,
-        //     description: 1,
-        //     start_date: 1,
-        //     end_date: 1,
-        //   },
-        // },
-      ])
-      .then((res) => {
-        console.log(res, 'join');
-        return res;
-      })
-      .catch((err) => {
-        console.log(err, 'error');
-        return err;
-      });
+      console.log(result, 'join');
+      return result;
+    } catch (error) {
+      console.error(error, 'error');
+      throw error;
+    }
   }
 
   async getTasksToProject() {
