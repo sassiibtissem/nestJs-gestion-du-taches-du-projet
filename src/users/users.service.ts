@@ -1,4 +1,3 @@
-
 import { User } from './entities/user.entity';
 
 import { Injectable } from '@nestjs/common';
@@ -17,8 +16,7 @@ export class UsersService {
 
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    
-   ) {}
+  ) {}
 
   async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(this.saltRounds);
@@ -43,7 +41,7 @@ export class UsersService {
 
   // findOneUser
   async findOne(email: string): Promise<User | null> {
-    return await this.userModel.findOne({email}); // Use findById to find a single user by ID
+    return await this.userModel.findOne({ email }); // Use findById to find a single user by ID
   }
 
   // function to update User inputs

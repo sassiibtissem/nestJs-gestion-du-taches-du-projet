@@ -47,7 +47,7 @@ export class TasksResolver {
 
   @Query(() => [Task])
   async getTasks() {
-    let tasks = await this.tasksService.getAllTasks();
+    let tasks = await this.tasksService. getDeveloperAndProjectbyTasks();
     console.log(tasks,"tasks")
     return tasks;
     

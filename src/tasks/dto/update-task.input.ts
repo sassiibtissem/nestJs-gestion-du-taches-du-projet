@@ -18,7 +18,8 @@ export class UpdateTaskInput extends PartialType(CreateTaskInput) {
   estimation_time:string;
   @Field({nullable:true})
   developer_name:string;
- 
+  @Field({nullable:true})
+  developerId:string;
   @Field({nullable:true})
   state:string;
 }
