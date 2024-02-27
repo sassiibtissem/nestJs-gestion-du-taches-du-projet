@@ -97,67 +97,36 @@ export class UsersService {
     }
 
     return null; // If user not found
-  } 
- async getUserByRole():Promise <User[]>{
- let user = await this.userModel.aggregate([
-
-   { $match: { role:"projectLeader" }  } ,
-   { $project:
-     {
-      "_id" : 1,
-      "firstName" : 1,
-      "lastName":1
-     
-    }
-
-
   }
-
-
-    
-
-])
- 
-  console.log(user, "userrr")
-  return user;
- }
-
-
- async getDeveloperByRole():Promise <User[]>{
-  let user = await this.userModel.aggregate([
- 
-    { $match: { role:"developer" }  } ,
-    { $project:
+  async getUserByRole(): Promise<User[]> {
+    let user = await this.userModel.aggregate([
+      { $match: { role: 'projectLeader' } },
       {
-       "_id" : 1,
-       "firstName" : 1,
-       "lastName":1
-      
-     }
- 
- 
-   }
- 
- 
-     
- 
- ])
-  
-   console.log(user, "userrr")
-   return user;
+        $project: {
+          _id: 1,
+          firstName: 1,
+          lastName: 1,
+        },
+      },
+    ]);
+
+    console.log(user, 'userrr');
+    return user;
   }
 
+  async getProjectsByUser() {
+    let test = await this.userModel.aggregate([
+      {
+        $lookup: {
+          from: 'projects',
+          localField: '_id',
+          foreignField: 'userId',
+          as: 'vl',
+        },
+      },
+    ]);
 
-
-
-
-
-
-
-
-
-
-
-
-
+    console.log('🍻', test);
+    return test;
+  }
 }

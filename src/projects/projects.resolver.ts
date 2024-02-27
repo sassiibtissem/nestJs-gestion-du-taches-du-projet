@@ -80,17 +80,12 @@ export class ProjectsResolver {
 
   @Query(() => [userProject])
   async getUsers() {
-         
-    let users = await this.projectsService.getAllUsersByProject()         
-    ;
-    console.log(users,"users")
+    let users = await this.projectsService.getAllUsersByProject();
+    console.log(users, 'users');
     return users;
-
-
-}
-@Query(() => [Project])
-  async getProject() {
-    return this.projectsService.getAllProjects();
-}
-
+  }
+  //   @Query(() => [Project])
+  //   async getProject() {
+  //     return this.projectsService.getAllProjects();
+  //   }
 }
