@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
 import { TasksModule } from './tasks/tasks.module';
+import { ToDoListModule } from './to-do-list/to-do-list.module';
 
 
 
@@ -22,6 +23,7 @@ import { TasksModule } from './tasks/tasks.module';
     MongooseModule.forRoot('mongodb://localhost:27017/gestionDb'),
     ProjectsModule,
     TasksModule,
+    ToDoListModule,
     
   ],
 })
